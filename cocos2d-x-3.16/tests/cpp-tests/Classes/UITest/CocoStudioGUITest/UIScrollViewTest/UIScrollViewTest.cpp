@@ -730,18 +730,19 @@ bool UIScrollViewTestEvents::init()
         ImageView* imageView = ImageView::create("Hello.png");
         scrollView->addChild(imageView);
         
-//        scrollView->setInnerContainerSize(imageView->getContentSize());
-        scrollView->setInnerContainerSize(Size(210, 122.5));
+        scrollView->setInnerContainerSize(imageView->getContentSize());
         Size innerSize = scrollView->getInnerContainerSize();
         imageView->setPosition(Vec2(innerSize.width / 2.0f, innerSize.height / 2.0f));
+        
         _uiLayer->addChild(scrollView);
         
+        // Jump to right bottom
+        scrollView->jumpToBottomRight();
         
         auto getRandomColor = [] {
             return Color4B(random(0, 255), random(0, 255), random(0, 255), 255);
         };
-        scrollView->addEventListener([&](Ref* scroll, ui::ScrollView::EventType e) {
-            CCLOG("scroll event %d ",e);
+        scrollView->addEventListener([&](Ref*, ui::ScrollView::EventType e) {
             switch ( e ) {
                 case ui::ScrollView::EventType::SCROLLING_BEGAN:
                     _displayValueLabel->setString("scrolling began!");
@@ -754,9 +755,6 @@ bool UIScrollViewTestEvents::init()
                 default: break;
             }
         });
-        
-        // Jump to right bottom
-        scrollView->jumpToBottomRight();
         
         return true;
     }
